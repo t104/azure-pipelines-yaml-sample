@@ -1,0 +1,14 @@
+name: convert_to_json
+trigger: none
+
+jobs:
+  - template: template.yml
+    parameters:
+      obj:
+        name: Alice
+        country: Japan
+        prefecture: Tokyo
+        friends:
+          - Bob
+          - Carol
+          - Dave
