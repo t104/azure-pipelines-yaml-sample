@@ -1,0 +1,23 @@
+parameters:
+  - name: obj
+    type: object
+
+jobs:
+  - job: ConvertToJson
+    pool:
+      vmImage: "windows-latest"
+    variables:
+      output_path: '$(Build.ArtifactStagingDirectory)\output.json'
+    steps:
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            $str = '${{  convertToJson(parameters.obj) }}'
+            Write-Host "$($str)"
+            $str | Out-File '$(output_path)' -Encoding utf8 -Force -Width 4096
+            $obj = ConvertFrom-Json $str
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: $(Build.ArtifactStagingDirectory)
+          artifactName: output_json
